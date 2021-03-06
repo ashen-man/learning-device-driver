@@ -1,33 +1,33 @@
-Linuxデバイスドライバの作り方
+# Linuxデバイスドライバの作り方
 
-# はじめに
+## はじめに
 
 - 平田 豊さんのLinuxデバイスドライバプログラミング（以下、デバドラ本）に沿って進めていきます。
 - ソースコードも基本的に上記の本のサポートページからDLしたものを使います。
 - 上記のコードをTeraTermでラズパイにSCP転送して、そこでビルドするというスタイルです。
 
-# 開発環境
+## 開発環境
 
 - 開発環境はRaspberry Pi Zero W上で起動している下記のOSです。
 
 ```sh
 uname -a
-Linux raspberrypi 5.10.17+ #1403 Mon Feb 22 11:26:13 GMT 2021 armv6l GNU/Linux
+Linux raspberrypi 5.10.17+ ##1403 Mon Feb 22 11:26:13 GMT 2021 armv6l GNU/Linux
 ```
 
 - 最初はimagerを使ってsdカードにインストールしたRaspberry Pi OSで進めるつもりでした。
 - ただ、そのOSには、/lib/modules/$(shell uname -r)/build/Makefileがなく、カーネルモジュールをビルドできませんでした。
 - apt full-upgradeでカーネルをアップグレードすると（正しいやり方かは分らない）、上のMakefileも取得でき、ビルドができるようになりました。
 
-# 最初のデバイスドライバ
+## 最初のデバイスドライバ
 
 - 下はデバドラ本記載のソースコードです。
 - カーネルが起動するときか、モジュールがカーネルにインサートされたときに呼び出されるのがmodule_init。
 - カーネルが取り除かれたときに呼び出されるのがmodule_exit。
 
 ```c
-#include <linux/module.h>
-#include <linux/init.h>
+##include <linux/module.h>
+##include <linux/init.h>
 
 MODULE_LICENSE("Dual BSD/GPL");
 
@@ -47,7 +47,7 @@ module_init(hello_init);
 module_exit(hello_exit);
 ```
 
-# ビルド
+## ビルド
 
 - 下はビルドのやり方を書いておくMakefileです。
 
@@ -82,7 +82,7 @@ make
 -rw-r--r-- 1 pi pi    0 Mar  6 13:27 Module.symvers
 ```
 
-# ロード・アンロード
+## ロード・アンロード
 
 - カーネルモジュールをロードして、アンロードします。
 
@@ -103,5 +103,5 @@ dmesg
 <略>
 ```
 
-# おわりに
+## おわりに
 - 今日はこんなところです。
